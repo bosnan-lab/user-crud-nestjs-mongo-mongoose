@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dtos';
