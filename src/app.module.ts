@@ -3,6 +3,8 @@ import { UserModule } from './model/user/user.module';
 import { LoggerModule } from 'nestjs-pino';
 import { CORRELATION_ID_HEADER, CorrelationIdMiddleware } from './middleware';
 import { Request } from 'express';
+import { ConfigModule } from '@nestjs/config';
+import { configLoader, envsSchema } from './config/development';
 
 @Module({
   imports: [
@@ -34,6 +36,10 @@ import { Request } from 'express';
           },
         },
       },
+    }),
+    ConfigModule.forRoot({
+      load: [configLoader],
+      validationSchema: envsSchema,
     }),
   ],
   controllers: [],
