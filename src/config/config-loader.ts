@@ -4,5 +4,6 @@ export const configLoader = () => {
     database: {
       uri: process.env.DATABASE_URL,
     },
+    apiKey: process.env.API_KEY,
   };
 };

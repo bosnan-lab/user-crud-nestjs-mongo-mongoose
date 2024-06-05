@@ -1,49 +1,22 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UserModule } from './model/user/user.module';
 import { LoggerModule } from 'nestjs-pino';
-import { CORRELATION_ID_HEADER, CorrelationIdMiddleware } from './middleware';
-import { Request } from 'express';
 import { ConfigModule } from '@nestjs/config';
-import { configLoader, envsSchema } from './config/development';
+import { loggerOptions } from './shared/logger/logger-options';
+import { CorrelationIdMiddleware } from './middleware';
+import { configOptions } from './config';
+import { AuthModule } from './model/auth/auth.module';
+import { AuthService } from './model/auth/auth.service';
 
 @Module({
   imports: [
     UserModule,
-    LoggerModule.forRoot({
-      pinoHttp: {
-        transport:
-          process.env.NODE_ENV === 'development'
-            ? {
-                target: 'pino-pretty',
-                options: {
-                  messageKey: 'message',
-                },
-              }
-            : undefined,
-        messageKey: 'message',
-        customProps: (req: Request) => {
-          return {
-            correlationId: req[CORRELATION_ID_HEADER],
-          };
-        },
-        autoLogging: false,
-        serializers: {
-          req: () => {
-            return undefined;
-          },
-          res: () => {
-            return undefined;
-          },
-        },
-      },
-    }),
-    ConfigModule.forRoot({
-      load: [configLoader],
-      validationSchema: envsSchema,
-    }),
+    AuthModule,
+    LoggerModule.forRoot(loggerOptions),
+    ConfigModule.forRoot(configOptions),
   ],
   controllers: [],
-  providers: [],
+  providers: [AuthService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
