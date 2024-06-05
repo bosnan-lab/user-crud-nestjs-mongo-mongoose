@@ -1,18 +1,24 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-
 import { ValidationPipe } from '@nestjs/common';
+import { Logger } from 'nestjs-pino';
+
+// TODO: INFORMATION
+// 1 = LOGGER
+// 2 = SET GLOBAL PREFIX
+// 3 = GLOBAL PIPES CONFIGURATION
+// 4 =
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // LOGGER
-  // app.useLogger(app.get(Logger));
+  // 1
+  app.useLogger(app.get(Logger));
 
-  // SET GLOBAL PREFIX
+  // 2
   app.setGlobalPrefix('api');
 
-  // GLOBAL PIPES CONFIGURATION
+  // 3
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

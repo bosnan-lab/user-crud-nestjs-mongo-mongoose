@@ -8,6 +8,7 @@ import { CreateUserDto } from './dtos';
 export class UserService {
   // 1
   private readonly logger = new Logger(UserService.name);
+
   private user = [{ id: '1', name: 'Brayan Cordova' }];
 
   // CREATE USER
