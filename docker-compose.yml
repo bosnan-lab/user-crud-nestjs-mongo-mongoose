@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  mongo:
+    container_name: crud-nestjs-mongo-mongoose
+
+    image: 'mongo:7.0'
+
+    environment:
+      - MONGO_DATA_DIR=/data/db
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo:/data/db
+
+volumes:
+  mongo:

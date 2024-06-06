@@ -7,7 +7,7 @@ export const configLoader = () => {
       dsn: process.env.SENTRY_DSN,
       enabled: process.env.SENTRY_ENABLED === 'true',
     },
-    database: {
+    mongo_database: {
       uri: process.env.DATABASE_URL,
     },
   };

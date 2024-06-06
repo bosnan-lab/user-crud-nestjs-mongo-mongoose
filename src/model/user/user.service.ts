@@ -1,47 +1,40 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from './dtos';
+import { Inject, Injectable } from '@nestjs/common';
+import { CreateUserDto, UpdateUserDto } from './dtos';
+import { USER_REPOSITORY } from './repository';
 
 // TODO: INFORMATION
-// 1 = LOGGER
+// 1 = USER REPOSITORY
+// 2 =
 
 @Injectable()
 export class UserService {
-  // 1
-  private readonly logger = new Logger(UserService.name);
-
-  private user = [{ id: '1', name: 'Brayan Cordova' }];
+  constructor(
+    // 1
+    @Inject(USER_REPOSITORY) private readonly userRepository,
+  ) {}
 
   // CREATE USER
   async createUserService(createUserDto: CreateUserDto) {
-    this.logger.log('Creating User in Service');
-    return { createUserDto };
+    return await this.userRepository.createUserService(createUserDto);
   }
 
   // FIND ALL USERS
   async findAllUsersService() {
-    return this.user;
+    return await this.userRepository.findAllUsersService();
   }
 
   // FIND ONE USER BY ID
   async findOneUserByIdService(id: string) {
-    const user = this.user.find((user) => user.id === id);
-
-    if (!user) {
-      throw new NotFoundException(`User not found with ID-${id}`);
-    }
-
-    return user;
+    return await this.userRepository.findOneUserByIdService(id);
   }
 
   // UPDATE USER (PATCH)
-  async updateUserService(updateUserDto: any, id: string) {
-    console.log(updateUserDto, id);
-    return {};
+  async updateUserService(updateUserDto: UpdateUserDto, id: string) {
+    return await this.userRepository.updateUserService(updateUserDto, id);
   }
 
   // DELETE USER BY ID (HARD DELETE)
   async deleteUserByIdService(id: string) {
-    console.log(id);
-    return {};
+    return await this.userRepository.deleteUserByIdService(id);
   }
 }

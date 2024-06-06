@@ -68,7 +68,8 @@ npm run test:cov
 Run the command to install necessary dependencies:
 
 ```bash
-npm i class-validator class-transform class-transformer nestjs-pino pino-http @nestjs/config joi @nestjs/passport passport passport-headerapikey passport-local @types/passport-local @ntegral/nestjs-sentry @sentry/node --force
+npm i class-validator class-transform class-transformer nestjs-pino pino-http @nestjs/config joi @nestjs/passport passport passport-headerapikey passport-local @types/passport-local @nestjs/mongoose mongoose
+( @ntegral/nestjs-sentry @sentry/node --force )
 ```
 
 Run the command to install Dev dependencies:

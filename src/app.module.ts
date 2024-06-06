@@ -14,10 +14,12 @@ import { AuthModule } from './model/auth/auth.module';
 import { AuthService } from './model/auth/auth.service';
 import { SentryInterceptor, SentryModule } from '@ntegral/nestjs-sentry';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { MongooseModule } from '@nestjs/mongoose';
 
 // TODO: INFORMATION
 // 1 = 'sentry' COME FROM './config/config-loader.ts' - sentry: {dsn: process.env.SENTRY_DSN, enabled: process.env.SENTRY_ENABLED === 'true',},
 // 2 = 'environment' COME FROM './config/config-loader.ts' - environment: process.env.NODE_ENV,
+// 3 = 'mongo_database' COME FROM './config/config-loader.ts - mongo_database: { uri: process.env.DATABASE_URL,    },
 
 @Module({
   imports: [
@@ -35,6 +37,16 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
           dsn: sentryConfig.dsn,
           enabled: sentryConfig.enabled,
           environment,
+        };
+      },
+      inject: [ConfigService],
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => {
+        const mongoConfig = configService.get('mongo_database'); // 3
+        return {
+          uri: mongoConfig.uri,
         };
       },
       inject: [ConfigService],

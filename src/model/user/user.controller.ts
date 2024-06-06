@@ -6,34 +6,25 @@ import {
   Patch,
   Param,
   Delete,
-  Logger,
-  NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dtos';
+import { CreateUserDto, UpdateUserDto } from './dtos';
 
 // TODO: INFORMATION
-// 1 = LOGGER
-// 2 = INJECT USER SERVICE
+// 1 = INJECT USER SERVICE
+// 2 =
 
 @Controller('user')
 export class UserController {
-  // 1
-  private readonly logger = new Logger(UserController.name);
-
   constructor(
-    // 2
+    // 1
     private readonly userService: UserService,
   ) {}
 
   // CREATE USER
   @Post('create-user')
   async createUserController(@Body() createUserDto: CreateUserDto) {
-    this.logger.log('Creating User in Controller');
-
     const user = await this.userService.createUserService(createUserDto);
-
-    this.logger.log('Finalized User in Controller');
 
     return user;
   }
@@ -54,7 +45,7 @@ export class UserController {
   @Patch('update-user/:id')
   async updateUserController(
     @Param('id') id: string,
-    @Body() updateUserDto: any,
+    @Body() updateUserDto: UpdateUserDto,
   ) {
     return await this.userService.updateUserService(updateUserDto, id);
   }
